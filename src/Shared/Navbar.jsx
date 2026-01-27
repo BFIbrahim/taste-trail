@@ -9,10 +9,8 @@ const Navbar = () => {
 
     const navLinks = <>
         <li><NavLink>Home</NavLink></li>
-        <li><NavLink>All recipies</NavLink></li>
-        <li><NavLink>Meal Planner</NavLink></li>
+        <li><NavLink to='/recipes'>All recipies</NavLink></li>
         <li><NavLink>Dashboard</NavLink></li>
-        
     </>
 
     return (
