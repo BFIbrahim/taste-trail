@@ -1,1 +1,14 @@
 @import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default, dark;
+}
+
+@plugin "daisyui/theme" {
+  name: "tastetrail_theme";
+  default: true;
+
+  --color-primary: #ffb703;       
+  --color-secondary: #2DC653;     
+  --color-accent: #6c757d;        
+  --color-base-content: #000000; 
+}
