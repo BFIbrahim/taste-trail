@@ -17,7 +17,7 @@ const Navbar = () => {
 
     return (
         <div>
-            <div className="navbar bg-gray-200 mt-2 rounded-xl shadow-lg">
+            <div className="navbar">
                 <div className="navbar-start">
                     <div className="dropdown">
                         <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -30,7 +30,7 @@ const Navbar = () => {
                         </ul>
                     </div>
                     <Link className="md:text-2xl">
-                        <h1 className='text-primary font-bold flex items-center gap-2'><GiCampCookingPot className='text-secondary md:text-3xl'/> TASTE<span className='text-secondary'>TRAIL</span></h1>
+                        <h1 className='text-primary font-bold flex items-center gap-2'><GiCampCookingPot className='text-secondary md:text-3xl'/> TASTETRAIL</h1>
                     </Link>
                 </div>
                 <div className="navbar-center hidden lg:flex">
@@ -40,7 +40,7 @@ const Navbar = () => {
                 </div>
                 <div className="navbar-end">
                     {
-                        user && <Link className="btn btn-secondary border-none text-white">Logout</Link>
+                        user && <Link className="btn btn-primary border-none text-white">Logout</Link>
                     }
                 </div>
             </div>
