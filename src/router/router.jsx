@@ -5,6 +5,7 @@ import AllRecipes from "../Pages/AllRecipes/AllRecipes";
 import Login from "../Pages/Authentication/Login";
 import AuthLayout from "../Layout/AuthLayout";
 import Register from "../Pages/Authentication/Register";
+import DashboardLayout from "../Layout/DashboardLayout";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,16 @@ export const router = createBrowserRouter([
       {
         path: 'register',
         element: <Register />
+      }
+    ]
+  },
+
+  {
+    path: 'dashboard',
+    element: <DashboardLayout />,
+    children: [
+      {
+        
       }
     ]
   }
