@@ -6,6 +6,7 @@ import Login from "../Pages/Authentication/Login";
 import AuthLayout from "../Layout/AuthLayout";
 import Register from "../Pages/Authentication/Register";
 import DashboardLayout from "../Layout/DashboardLayout";
+import MealPlanner from "../Pages/Dashboard/UserDasboard/MealPlanner";
 
 export const router = createBrowserRouter([
   {
@@ -43,7 +44,8 @@ export const router = createBrowserRouter([
     element: <DashboardLayout />,
     children: [
       {
-        
+        path: "mealplanner",
+        element: <MealPlanner />
       }
     ]
   }

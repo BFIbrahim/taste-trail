@@ -1,6 +1,7 @@
 ## Instalation ##
-- tailwindCSS
+- TailwindCSS
 - React Router
 - DaisyUI
-- react Icons
+- React Icons
 - React Hook Form
+- Axios
