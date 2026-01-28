@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { FaUserCircle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
+import useAxios from "../../Hooks/useAxios";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const [profilePhoto, setProfilePhoto] = useState(null);
+  const axiosInstance = useAxios()
+  const navigate = useNavigate();
 
   const {
     register,
@@ -19,12 +23,50 @@ const Register = () => {
     }
   };
 
-  const onSubmit = (data) => {
-    console.log({
-      ...data,
-      profilePhoto
-    });
+  const onSubmit = async (data) => {
+    const userInfo = {
+      name: data.fullName,
+      email: data.email,
+      password: data.password,
+      profilePicture: ""
+    };
+
+    try {
+      await axiosInstance.post("/register", userInfo);
+
+      Swal.fire({
+        icon: "success",
+        title: "Registration Successful!",
+        text: "Welcome to TasteTrail",
+        confirmButtonText: "Go to Dashboard"
+      }).then(() => {
+        navigate("/dashboard");
+      });
+
+    } catch (error) {
+
+      if (error.response?.status === 400) {
+        Swal.fire({
+          icon: "warning",
+          title: "Email Already Exists",
+          text: "Please login with your existing account.",
+          confirmButtonText: "<button className='btn-primary'>Go to Login</button>"
+        }).then(() => {
+          navigate("/auth/login");
+        });
+
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Registration Failed",
+          text: "Something went wrong. Please try again."
+        });
+      }
+
+      console.error(error);
+    }
   };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -75,7 +117,7 @@ const Register = () => {
                 <input
                   type="text"
                   className="input input-bordered w-full"
-                  placeholder="John Doe"
+                  placeholder="Your name"
                   {...register("fullName", {
                     required: "Full name is required"
                   })}

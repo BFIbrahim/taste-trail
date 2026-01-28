@@ -5,3 +5,4 @@
 - React Icons
 - React Hook Form
 - Axios
+- sweetalert2
