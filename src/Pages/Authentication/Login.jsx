@@ -1,17 +1,50 @@
 import React from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import useAxios from "../../Hooks/useAxios";
 
 const Login = () => {
+
+  const axiosInstance = useAxios();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Login data:", data);
+  const onSubmit = async (data) => {
+    try {
+      const res = await axiosInstance.post("/login", data);
+      localStorage.setItem("access-token", res.data.token);
+
+      Swal.fire({
+        icon: "success",
+        title: "Login Successful",
+        text: `Welcome back, ${res.data.user.name}!`,
+        timer: 1500,
+        showConfirmButton: false
+      });
+
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1600);
+
+    } catch (error) {
+      console.error(error);
+
+      if (error.response?.status === 404) {
+        Swal.fire("User not found", "Please register first.", "warning");
+      } else if (error.response?.status === 400) {
+        Swal.fire("Invalid Credentials", "Check your password or email.", "error");
+      } else {
+        Swal.fire("Login Failed", "Something went wrong. Try again.", "error");
+      }
+    }
   };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center">
