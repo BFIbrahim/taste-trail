@@ -5,13 +5,45 @@ import { GiCampCookingPot } from "react-icons/gi";
 
 const Navbar = () => {
 
-    const user = true
+    const user = false
 
-    const navLinks = <>
-        <li><NavLink>Home</NavLink></li>
-        <li><NavLink to='/recipes'>All recipies</NavLink></li>
-        <li><NavLink>Dashboard</NavLink></li>
-    </>
+    const navLinks = (
+        <>
+            <li>
+                <NavLink
+                    to="/"
+                    className={({ isActive }) =>
+                        `px-3 font-medium ${isActive
+                            ? "text-primary border-b-2 border-primary"
+                            : "text-accent hover:text-primary"
+                        }`
+                    }
+                >
+                    Home
+                </NavLink>
+            </li>
+            <li>
+                <NavLink
+                    to="/recipes"
+                    className={({ isActive }) =>
+                        `px-3  font-medium ${isActive
+                            ? "text-primary border-b-2 border-primary"
+                            : "text-accent hover:text-primary"
+                        }`
+                    }
+                >
+                    All Recipes
+                </NavLink>
+            </li>
+            <li>
+                <NavLink
+                    to="/dashboard">
+                    Dashboard
+                </NavLink>
+            </li>
+        </>
+    );
+
 
     return (
         <div>
@@ -28,7 +60,7 @@ const Navbar = () => {
                         </ul>
                     </div>
                     <Link className="md:text-2xl">
-                        <h1 className='text-primary font-bold flex items-center gap-2'><GiCampCookingPot className='text-secondary md:text-3xl'/> TASTETRAIL</h1>
+                        <h1 className='text-primary font-bold flex items-center gap-2'><GiCampCookingPot className='text-secondary md:text-3xl' /> TASTETRAIL</h1>
                     </Link>
                 </div>
                 <div className="navbar-center hidden lg:flex">
@@ -38,7 +70,7 @@ const Navbar = () => {
                 </div>
                 <div className="navbar-end">
                     {
-                        user && <Link className="btn btn-primary border-none text-white">Logout</Link>
+                        user ? <Link className="btn btn-primary border-none text-white">Logout</Link> : <Link to='/auth/login' className="btn btn-primary border-none text-white">Login</Link>
                     }
                 </div>
             </div>
