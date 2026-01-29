@@ -8,6 +8,7 @@ import Register from "../Pages/Authentication/Register";
 import DashboardLayout from "../Layout/DashboardLayout";
 import MealPlanner from "../Pages/Dashboard/UserDasboard/MealPlanner";
 import CookingTracker from "../Pages/Dashboard/UserDasboard/CookingTracker";
+import PrivetRoute from "../routes/PrivetRoute";
 
 export const router = createBrowserRouter([
   {
@@ -20,7 +21,7 @@ export const router = createBrowserRouter([
         },
         {
           path: 'recipes',
-          element: <AllRecipes />
+          element: <PrivetRoute><AllRecipes /></PrivetRoute>
         }
     ]
   },
@@ -42,7 +43,7 @@ export const router = createBrowserRouter([
 
   {
     path: 'dashboard',
-    element: <DashboardLayout />,
+    element: <PrivetRoute><DashboardLayout /></PrivetRoute>,
     children: [
       {
         path: "mealplanner",

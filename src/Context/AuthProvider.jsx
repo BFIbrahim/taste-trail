@@ -6,9 +6,9 @@ const AuthProvider = ({ children }) => {
     const { data: user, isLoading, refetch } = useCurrentUser();
 
     const authInfo = {
-        user,            // current logged-in user
+        user,
         loading: isLoading,
-        refetchUser: refetch, // manually refetch if token changes
+        refetchUser: refetch,
     };
 
     return (
