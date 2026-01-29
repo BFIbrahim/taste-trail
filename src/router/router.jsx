@@ -12,6 +12,7 @@ import TrackCooking from "../Pages/Dashboard/UserDasboard/TrackCooking";
 import ManageCategories from "../Pages/Dashboard/AdminDashboard/ManageCategories";
 import AddNewRecipe from "../Pages/Dashboard/AdminDashboard/AddNewRecipe";
 import ManageRecipe from "../Pages/Dashboard/AdminDashboard/ManageRecipe";
+import Cookbook from "../Pages/Dashboard/UserDasboard/CookBook";
 
 export const router = createBrowserRouter([
   {
@@ -67,6 +68,10 @@ export const router = createBrowserRouter([
       {
         path: 'manage-recipes',
         element: <ManageRecipe />
+      },
+      {
+        path: 'personal-cookbook',
+        element: <Cookbook />
       }
     ]
   }
