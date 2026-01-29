@@ -16,17 +16,17 @@ const days = [
 
 const allRecipes = [
   {
-    id: 1,
+    _id: 1,
     title: "Chicken Biryani",
     image: "https://images.unsplash.com/photo-1600628422019-57f1e8b26d94",
   },
   {
-    id: 2,
+    _id: 2,
     title: "Vegetable Pasta",
     image: "https://images.unsplash.com/photo-1529042410759-befb1204b468",
   },
   {
-    id: 3,
+    _id: 3,
     title: "Egg Omelette",
     image: "https://images.unsplash.com/photo-1551218808-94e220e084d2",
   },
@@ -35,8 +35,6 @@ const allRecipes = [
 const MealPlanner = () => {
   const axiosSecure = useAxiosSecure();
   const {user} = useContext(AuthContext);
-  
-  console.log(user)
 
   const [planner, setPlanner] = useState({});
   const [activeDay, setActiveDay] = useState(null);
@@ -72,11 +70,11 @@ const MealPlanner = () => {
     }
 
     const payload = Object.keys(planner).map((day) => ({
-      userId: 6767,
-      recipeId: planner[day].id,
+      userId: user._id,
+      recipeId: planner[day]._id,
       date: new Date(),
       dayOfWeek: day,
-      email: 'badhon@gmail.com',
+      email: user.email,
       status: planner[day].status || "Planned",
     }));
 

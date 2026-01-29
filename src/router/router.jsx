@@ -7,8 +7,8 @@ import AuthLayout from "../Layout/AuthLayout";
 import Register from "../Pages/Authentication/Register";
 import DashboardLayout from "../Layout/DashboardLayout";
 import MealPlanner from "../Pages/Dashboard/UserDasboard/MealPlanner";
-import CookingTracker from "../Pages/Dashboard/UserDasboard/CookingTracker";
 import PrivetRoute from "../routes/PrivetRoute";
+import TrackCooking from "../Pages/Dashboard/UserDasboard/TrackCooking";
 
 export const router = createBrowserRouter([
   {
@@ -51,7 +51,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "track-cooking",
-        element: <CookingTracker />
+        element: <TrackCooking />
       }
     ]
   }
