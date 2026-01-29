@@ -1,13 +1,15 @@
-import React, { } from "react";
+import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
-import { AuthContext } from "../../../Context/AuthContext";
-import { Link } from "react-router";
+import { RxCross1 } from "react-icons/rx";
 
 const ManageRecipe = () => {
   const axiosInstance = useAxiosSecure();
   const queryClient = useQueryClient();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
 
   const { data: recipes = [], isLoading: recipesLoading } = useQuery({
     queryKey: ["recipes"],
@@ -66,6 +68,28 @@ const ManageRecipe = () => {
     assignCategoryMutation.mutate({ recipeId, category });
   };
 
+  const updateRecipeMutation = useMutation({
+    mutationFn: (updatedRecipe) =>
+      axiosInstance.patch(`/recipes/${updatedRecipe._id}`, updatedRecipe),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["recipes"]);
+      Swal.fire("Updated!", "Recipe updated successfully", "success");
+      setIsModalOpen(false);
+    },
+    onError: () => {
+      Swal.fire("Error", "Failed to update recipe", "error");
+    },
+  });
+
+  const handleEditClick = (recipe) => {
+    setSelectedRecipe(recipe);
+    setIsModalOpen(true);
+  };
+
+  const handleSave = () => {
+    updateRecipeMutation.mutate(selectedRecipe);
+  };
+
   if (recipesLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -76,9 +100,7 @@ const ManageRecipe = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold text-primary mb-6">
-        Manage Recipes
-      </h1>
+      <h1 className="text-3xl font-bold text-primary mb-6">Manage Recipes</h1>
 
       <div className="hidden md:block overflow-x-auto">
         <table className="table table-zebra w-full">
@@ -119,12 +141,12 @@ const ManageRecipe = () => {
                 </td>
                 <td>{recipe.cuisine}</td>
                 <td className="flex gap-2">
-                  <Link
-                    to={`/dashboard/edit-recipe/${recipe._id}`}
+                  <button
+                    onClick={() => handleEditClick(recipe)}
                     className="btn btn-sm btn-warning"
                   >
                     Edit
-                  </Link>
+                  </button>
                   <button
                     onClick={() => handleDelete(recipe._id)}
                     className="btn btn-sm btn-error"
@@ -174,12 +196,12 @@ const ManageRecipe = () => {
               </select>
 
               <div className="flex gap-2 mt-2">
-                <Link
-                  to={`/dashboard/edit-recipe/${recipe._id}`}
+                <button
+                  onClick={() => handleEditClick(recipe)}
                   className="btn btn-sm btn-warning flex-1"
                 >
                   Edit
-                </Link>
+                </button>
                 <button
                   onClick={() => handleDelete(recipe._id)}
                   className="btn btn-sm btn-error flex-1"
@@ -191,6 +213,112 @@ const ManageRecipe = () => {
           </div>
         ))}
       </div>
+
+      {isModalOpen && selectedRecipe && (
+        <div className="fixed inset-0 bg-black/40 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-xl w-full max-w-lg relative max-h-[90vh] overflow-y-auto">
+            <button
+              className="absolute top-2 right-2 text-gray-500 text-xl"
+              onClick={() => setIsModalOpen(false)}
+            >
+              <RxCross1 className="text-xl" />
+            </button>
+            <h2 className="text-2xl font-bold mb-4">Edit Recipe</h2>
+
+            <div className="flex flex-col gap-4">
+
+              <input
+                type="text"
+                className="input input-bordered w-full"
+                placeholder="Title"
+                value={selectedRecipe.title}
+                onChange={(e) =>
+                  setSelectedRecipe({ ...selectedRecipe, title: e.target.value })
+                }
+              />
+
+              <select
+                className="select select-bordered w-full"
+                value={selectedRecipe.category}
+                onChange={(e) =>
+                  setSelectedRecipe({ ...selectedRecipe, category: e.target.value })
+                }
+              >
+                {categories.map((cat) => (
+                  <option key={cat._id} value={cat.name}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+
+              <input
+                type="text"
+                className="input input-bordered w-full"
+                placeholder="Cuisine"
+                value={selectedRecipe.cuisine}
+                onChange={(e) =>
+                  setSelectedRecipe({ ...selectedRecipe, cuisine: e.target.value })
+                }
+              />
+
+              <textarea
+                className="textarea textarea-bordered w-full"
+                placeholder="Ingredients (comma separated)"
+                value={selectedRecipe.ingredients.join(", ")}
+                onChange={(e) =>
+                  setSelectedRecipe({
+                    ...selectedRecipe,
+                    ingredients: e.target.value.split(",").map((i) => i.trim()),
+                  })
+                }
+              />
+
+              <textarea
+                className="textarea textarea-bordered w-full"
+                placeholder="Instructions"
+                value={selectedRecipe.instructions}
+                onChange={(e) =>
+                  setSelectedRecipe({
+                    ...selectedRecipe,
+                    instructions: e.target.value,
+                  })
+                }
+              />
+
+              <input
+                type="number"
+                className="input input-bordered w-full"
+                placeholder="Calories"
+                value={selectedRecipe.calories || ""}
+                onChange={(e) =>
+                  setSelectedRecipe({
+                    ...selectedRecipe,
+                    calories: Number(e.target.value),
+                  })
+                }
+              />
+
+              <input
+                type="text"
+                className="input input-bordered w-full"
+                placeholder="Cooking Time (e.g., 30 mins)"
+                value={selectedRecipe.cookingTime || ""}
+                onChange={(e) =>
+                  setSelectedRecipe({
+                    ...selectedRecipe,
+                    cookingTime: e.target.value,
+                  })
+                }
+              />
+
+              <button onClick={handleSave} className="btn btn-primary mt-2">
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
