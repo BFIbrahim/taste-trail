@@ -15,7 +15,7 @@ const Navbar = () => {
                 <NavLink
                     to="/"
                     className={({ isActive }) =>
-                        `px-3 font-medium ${isActive
+                        `px-3 text-black ${isActive
                             ? "text-primary border-b-2 border-primary"
                             : "text-accent hover:text-primary"
                         }`
@@ -28,7 +28,7 @@ const Navbar = () => {
                 <NavLink
                     to="/recipes"
                     className={({ isActive }) =>
-                        `px-3  font-medium ${isActive
+                        `px-3 text-black ${isActive
                             ? "text-primary border-b-2 border-primary"
                             : "text-accent hover:text-primary"
                         }`
@@ -39,6 +39,7 @@ const Navbar = () => {
             </li>
             <li>
                 <NavLink
+                    
                     to="/dashboard">
                     Dashboard
                 </NavLink>

@@ -13,27 +13,34 @@ import ManageCategories from "../Pages/Dashboard/AdminDashboard/ManageCategories
 import AddNewRecipe from "../Pages/Dashboard/AdminDashboard/AddNewRecipe";
 import ManageRecipe from "../Pages/Dashboard/AdminDashboard/ManageRecipe";
 import Cookbook from "../Pages/Dashboard/UserDasboard/CookBook";
+import RecipeDetails from "../Pages/AllRecipes/RecipeDetails";
+import Overview from "../Pages/Dashboard/UserDasboard/Overview";
+import DashboardRedirect from "../Components/DashboardRedirect";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout></RootLayout>,
     children: [
-        {
-            index: true,
-            element: <Home />
-        },
-        {
-          path: 'recipes',
-          element: <PrivetRoute><AllRecipes /></PrivetRoute>
-        }
+      {
+        index: true,
+        element: <Home />
+      },
+      {
+        path: 'recipes',
+        element: <PrivetRoute><AllRecipes /></PrivetRoute>
+      },
+      {
+        path: 'recipes/:id',
+        element: <PrivetRoute><RecipeDetails /></PrivetRoute>
+      }
     ]
   },
 
   {
     path: 'auth',
     element: <AuthLayout />,
-    children:[
+    children: [
       {
         path: 'login',
         element: <Login />
@@ -49,6 +56,10 @@ export const router = createBrowserRouter([
     path: 'dashboard',
     element: <PrivetRoute><DashboardLayout /></PrivetRoute>,
     children: [
+      {
+        index: true,
+        element: <DashboardRedirect />
+      },
       {
         path: "mealplanner",
         element: <MealPlanner />
@@ -72,6 +83,10 @@ export const router = createBrowserRouter([
       {
         path: 'personal-cookbook',
         element: <Cookbook />
+      },
+      {
+        path: 'overview',
+        element: <Overview />
       }
     ]
   }
