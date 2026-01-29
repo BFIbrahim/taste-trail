@@ -9,6 +9,7 @@ import DashboardLayout from "../Layout/DashboardLayout";
 import MealPlanner from "../Pages/Dashboard/UserDasboard/MealPlanner";
 import PrivetRoute from "../routes/PrivetRoute";
 import TrackCooking from "../Pages/Dashboard/UserDasboard/TrackCooking";
+import ManageCategories from "../Pages/Dashboard/AdminDashboard/ManageCategories";
 
 export const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ export const router = createBrowserRouter([
       {
         path: "track-cooking",
         element: <TrackCooking />
+      },
+      {
+        path: "manage-categories",
+        element: <ManageCategories />
       }
     ]
   }

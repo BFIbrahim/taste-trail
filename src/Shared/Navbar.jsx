@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, NavLink } from 'react-router';
 import { GiCampCookingPot } from "react-icons/gi";
+import { FaUserCircle } from 'react-icons/fa';
+import { AuthContext } from '../Context/AuthContext';
 
 
 const Navbar = () => {
 
-    const user = false
+    const {user} = useContext(AuthContext);
 
     const navLinks = (
         <>
@@ -70,7 +72,7 @@ const Navbar = () => {
                 </div>
                 <div className="navbar-end">
                     {
-                        user ? <Link className="btn btn-primary border-none text-white">Logout</Link> : <Link to='/auth/login' className="btn btn-primary border-none text-white">Login</Link>
+                        user ? <FaUserCircle className='text-3xl text-gray-500' /> : <Link to='/auth/login' className="btn btn-primary border-none text-white">Login</Link>
                     }
                 </div>
             </div>

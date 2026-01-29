@@ -5,14 +5,14 @@ import { MdOutlineTrackChanges } from 'react-icons/md';
 import { FaBook, FaClipboardList } from 'react-icons/fa';
 import { BiSolidCategory } from 'react-icons/bi';
 import { FaCirclePlus } from 'react-icons/fa6';
+import { useContext } from 'react';
+import { AuthContext } from '../Context/AuthContext';
 
 
 
 const DashboardLayout = () => {
 
-    const user = {
-        role: 'user'
-    }
+    const {user} = useContext(AuthContext);
 
     return (
         <div>
@@ -150,7 +150,7 @@ const DashboardLayout = () => {
                                 user?.role === 'admin' && (
                                     <li>
                                         <NavLink
-                                            to="/dashboard/personal-cookbook"
+                                            to="/dashboard/manage-categories"
                                             className={({ isActive }) =>
                                                 `is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3 px-4 rounded-md transition ${isActive ? "bg-gray-700 text-white" : ""}`
                                             }
