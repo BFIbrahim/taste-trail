@@ -7,36 +7,46 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../../Context/AuthContext";
 
 const Register = () => {
-  const [profilePhoto, setProfilePhoto] = useState(null);
-  const axiosInstance = useAxios()
+  const [profilePhoto, setProfilePhoto] = useState(null); // for preview
+  const [profileFile, setProfileFile] = useState(null); // actual File
+  const axiosInstance = useAxios();
   const navigate = useNavigate();
   const { refetchUser } = useContext(AuthContext);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setProfileFile(file);
       setProfilePhoto(URL.createObjectURL(file));
     }
   };
 
-
   const onSubmit = async (data) => {
-    const userInfo = {
-      name: data.fullName,
-      email: data.email,
-      password: data.password,
-      profilePicture: ""
-    };
-
     try {
-      const res = await axiosInstance.post("/register", userInfo);
+      let imageUrl = "";
+      if (profileFile) {
+        const formData = new FormData();
+        formData.append("image", profileFile);
 
+        const res = await fetch(
+          `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,
+          { method: "POST", body: formData }
+        );
+
+        const imgData = await res.json();
+        imageUrl = imgData.data.display_url;
+      }
+
+      const userInfo = {
+        name: data.fullName,
+        email: data.email,
+        password: data.password,
+        profilePicture: imageUrl,
+      };
+
+      const res = await axiosInstance.post("/register", userInfo);
       localStorage.setItem("access-token", res.data.token);
       refetchUser();
 
@@ -45,9 +55,7 @@ const Register = () => {
         title: "Registration Successful!",
         text: "Welcome to TasteTrail",
         confirmButtonText: "Go to Dashboard"
-      }).then(() => {
-        navigate("/dashboard");
-      });
+      }).then(() => navigate("/dashboard"));
 
     } catch (error) {
       if (error.response?.status === 400) {
@@ -55,9 +63,7 @@ const Register = () => {
           icon: "warning",
           title: "Email Already Exists",
           text: "Please login with your existing account."
-        }).then(() => {
-          navigate("/auth/login");
-        });
+        }).then(() => navigate("/auth/login"));
       } else {
         Swal.fire({
           icon: "error",
@@ -68,8 +74,6 @@ const Register = () => {
       console.error(error);
     }
   };
-
-
 
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -101,7 +105,6 @@ const Register = () => {
                 ) : (
                   <FaUserCircle className="w-28 h-28 text-gray-300" />
                 )}
-
                 <input
                   type="file"
                   accept="image/*"
@@ -112,78 +115,48 @@ const Register = () => {
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-
               <div>
-                <label className="block text-accent mb-1 font-medium">
-                  Full Name
-                </label>
+                <label className="block text-accent mb-1 font-medium">Full Name</label>
                 <input
                   type="text"
                   className="input input-bordered w-full"
                   placeholder="Your name"
-                  {...register("fullName", {
-                    required: "Full name is required"
-                  })}
+                  {...register("fullName", { required: "Full name is required" })}
                 />
-                {errors.fullName && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.fullName.message}
-                  </p>
-                )}
+                {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName.message}</p>}
               </div>
 
               <div>
-                <label className="block text-accent mb-1 font-medium">
-                  Email
-                </label>
+                <label className="block text-accent mb-1 font-medium">Email</label>
                 <input
                   type="email"
                   className="input input-bordered w-full"
                   placeholder="you@example.com"
-                  {...register("email", {
-                    required: "Email is required"
-                  })}
+                  {...register("email", { required: "Email is required" })}
                 />
-                {errors.email && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.email.message}
-                  </p>
-                )}
+                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
               </div>
 
               <div>
-                <label className="block text-accent mb-1 font-medium">
-                  Password
-                </label>
+                <label className="block text-accent mb-1 font-medium">Password</label>
                 <input
                   type="password"
                   className="input input-bordered w-full"
                   placeholder="Enter your password"
                   {...register("password", {
                     required: "Password is required",
-                    minLength: {
-                      value: 6,
-                      message: "Password must be at least 6 characters"
-                    }
+                    minLength: { value: 6, message: "Password must be at least 6 characters" }
                   })}
                 />
-                {errors.password && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.password.message}
-                  </p>
-                )}
+                {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
               </div>
 
-              <button className="btn btn-primary w-full text-white">
-                Register
-              </button>
+              <button className="btn btn-primary w-full text-white">Register</button>
             </form>
 
             <p className="text-center text-gray-500 mt-4">
               Already have an account?{" "}
-              <Link to="/auth/login" className="text-primary font-medium">
-                Login
-              </Link>
+              <Link to="/auth/login" className="text-primary font-medium">Login</Link>
             </p>
 
           </div>

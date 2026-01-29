@@ -10,6 +10,7 @@ import MealPlanner from "../Pages/Dashboard/UserDasboard/MealPlanner";
 import PrivetRoute from "../routes/PrivetRoute";
 import TrackCooking from "../Pages/Dashboard/UserDasboard/TrackCooking";
 import ManageCategories from "../Pages/Dashboard/AdminDashboard/ManageCategories";
+import AddNewRecipe from "../Pages/Dashboard/AdminDashboard/AddNewRecipe";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
       {
         path: "manage-categories",
         element: <ManageCategories />
+      },
+      {
+        path: "add-new-recipe",
+        element: <AddNewRecipe />
       }
     ]
   }
