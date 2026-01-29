@@ -11,7 +11,7 @@ import { FaCirclePlus } from 'react-icons/fa6';
 const DashboardLayout = () => {
 
     const user = {
-        role: 'admin'
+        role: 'user'
     }
 
     return (
@@ -28,7 +28,6 @@ const DashboardLayout = () => {
                         </Link>
                     </nav>
                     <Outlet />
-                    <div className="p-4">Page Content</div>
                 </div>
 
                 <div className="drawer-side is-drawer-close:overflow-visible">

@@ -6,3 +6,4 @@
 - React Hook Form
 - Axios
 - sweetalert2
+- Tanstack Query
