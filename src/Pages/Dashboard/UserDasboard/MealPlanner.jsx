@@ -24,9 +24,7 @@ const MealPlanner = () => {
   const [showModal, setShowModal] = useState(false);
   const [search, setSearch] = useState("");
 
-  /* =======================
-     FETCH RECIPES FROM API
-  ======================== */
+
   const { data: recipes = [], isLoading } = useQuery({
     queryKey: ["recipes"],
     queryFn: async () => {
@@ -104,9 +102,6 @@ const MealPlanner = () => {
     });
   };
 
-  /* =======================
-     CLEAN FILTER LOGIC
-  ======================== */
   const filteredRecipes = recipes.filter((recipe) =>
     recipe.title.toLowerCase().includes(search.toLowerCase())
   );
