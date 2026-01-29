@@ -103,8 +103,8 @@ const ManageRecipe = () => {
       <h1 className="text-3xl font-bold text-primary mb-6">Manage Recipes</h1>
 
       <div className="hidden md:block overflow-x-auto">
-        <table className="table table-zebra w-full">
-          <thead>
+        <table className="table table-zebra w-full rounded-xl shadow-md">
+          <thead className="bg-primary text-white">
             <tr>
               <th>Title</th>
               <th>Category</th>

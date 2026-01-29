@@ -58,7 +58,7 @@ const TrackCooking = () => {
 
       <div className="hidden md:block overflow-x-auto">
         <table className="table table-zebra w-full">
-          <thead>
+          <thead className="bg-primary text-white">
             <tr>
               <th>Recipe</th>
               <th>Day</th>

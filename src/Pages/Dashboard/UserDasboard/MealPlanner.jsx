@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { AuthContext } from "../../../Context/AuthContext";
 
@@ -14,32 +15,25 @@ const days = [
   "Sunday",
 ];
 
-const allRecipes = [
-  {
-    _id: 1,
-    title: "Chicken Biryani",
-    image: "https://images.unsplash.com/photo-1600628422019-57f1e8b26d94",
-  },
-  {
-    _id: 2,
-    title: "Vegetable Pasta",
-    image: "https://images.unsplash.com/photo-1529042410759-befb1204b468",
-  },
-  {
-    _id: 3,
-    title: "Egg Omelette",
-    image: "https://images.unsplash.com/photo-1551218808-94e220e084d2",
-  },
-];
-
 const MealPlanner = () => {
   const axiosSecure = useAxiosSecure();
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const [planner, setPlanner] = useState({});
   const [activeDay, setActiveDay] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [search, setSearch] = useState("");
+
+  /* =======================
+     FETCH RECIPES FROM API
+  ======================== */
+  const { data: recipes = [], isLoading } = useQuery({
+    queryKey: ["recipes"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/recipes");
+      return res.data;
+    },
+  });
 
   const openModal = (day) => {
     setActiveDay(day);
@@ -80,7 +74,6 @@ const MealPlanner = () => {
 
     try {
       await axiosSecure.post("/meal-plans", payload);
-
       Swal.fire({
         icon: "success",
         title: "Saved!",
@@ -90,8 +83,9 @@ const MealPlanner = () => {
       });
     } catch (error) {
       Swal.fire("Error", "Failed to save meal plan", "error");
-      console.error(error);
+      console.log(error);
     }
+    
   };
 
   const handleClearWeek = () => {
@@ -110,6 +104,13 @@ const MealPlanner = () => {
     });
   };
 
+  /* =======================
+     CLEAN FILTER LOGIC
+  ======================== */
+  const filteredRecipes = recipes.filter((recipe) =>
+    recipe.title.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-10">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
@@ -118,10 +119,7 @@ const MealPlanner = () => {
         </h1>
 
         <div className="flex gap-3 mt-4 md:mt-0">
-          <button
-            onClick={handleClearWeek}
-            className="btn btn-outline btn-sm"
-          >
+          <button onClick={handleClearWeek} className="btn btn-outline btn-sm">
             Clear Week
           </button>
           <button
@@ -135,10 +133,7 @@ const MealPlanner = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-7 gap-4">
         {days.map((day) => (
-          <div
-            key={day}
-            className="border rounded-xl p-3 bg-white min-h-[180px]"
-          >
+          <div key={day} className="border rounded-xl p-3 bg-white min-h-[180px]">
             <h3 className="font-semibold mb-3 text-primary">{day}</h3>
 
             {!planner[day] && (
@@ -193,13 +188,12 @@ const MealPlanner = () => {
             />
 
             <div className="space-y-3 max-h-64 overflow-y-auto">
-              {allRecipes
-                .filter((r) =>
-                  r.title.toLowerCase().includes(search.toLowerCase())
-                )
-                .map((recipe) => (
+              {isLoading ? (
+                <p className="text-center text-gray-500">Loading recipes...</p>
+              ) : (
+                filteredRecipes.map((recipe) => (
                   <button
-                    key={recipe.id}
+                    key={recipe._id}
                     onClick={() => addRecipe(recipe)}
                     className="flex items-center gap-3 w-full p-2 border rounded-lg hover:bg-gray-100"
                   >
@@ -210,7 +204,8 @@ const MealPlanner = () => {
                     />
                     <span className="font-medium">{recipe.title}</span>
                   </button>
-                ))}
+                ))
+              )}
             </div>
 
             <button
