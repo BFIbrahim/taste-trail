@@ -14,14 +14,21 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors }
   } = useForm();
+
+  // 🔹 Admin autofill handler
+  const handleAdminCredentials = () => {
+    setValue("email", "admin@tastetrailadmin.com");
+    setValue("password", "admin#@33205");
+  };
 
   const onSubmit = async (data) => {
     try {
       const res = await axiosInstance.post("/login", data);
       localStorage.setItem("access-token", res.data.token);
-      refetchUser()
+      refetchUser();
 
       Swal.fire({
         icon: "success",
@@ -48,7 +55,6 @@ const Login = () => {
     }
   };
 
-
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="bg-white rounded-2xl shadow-xl flex flex-col lg:flex-row w-full max-w-4xl overflow-hidden">
@@ -69,6 +75,7 @@ const Login = () => {
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 
+              {/* Email */}
               <div>
                 <label className="block text-accent mb-1 font-medium">
                   Email
@@ -88,6 +95,7 @@ const Login = () => {
                 )}
               </div>
 
+              {/* Password */}
               <div>
                 <label className="block text-accent mb-1 font-medium">
                   Password
@@ -111,12 +119,23 @@ const Login = () => {
                 )}
               </div>
 
+              {/* Login Button */}
               <button
                 type="submit"
                 className="btn btn-primary w-full text-white"
               >
                 Login
               </button>
+
+              {/* Admin Credentials Button */}
+              <button
+                type="button"
+                onClick={handleAdminCredentials}
+                className="btn btn-outline btn-secondary w-full"
+              >
+                Use Admin Credentials
+              </button>
+
             </form>
 
             <p className="text-center text-gray-500 mt-4">
