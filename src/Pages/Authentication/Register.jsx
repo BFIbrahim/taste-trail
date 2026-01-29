@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { FaUserCircle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import useAxios from "../../Hooks/useAxios";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../Context/AuthContext";
 
 const Register = () => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   const axiosInstance = useAxios()
   const navigate = useNavigate();
+  const { refetchUser } = useContext(AuthContext);
 
   const {
     register,
@@ -23,6 +25,7 @@ const Register = () => {
     }
   };
 
+
   const onSubmit = async (data) => {
     const userInfo = {
       name: data.fullName,
@@ -32,7 +35,10 @@ const Register = () => {
     };
 
     try {
-      await axiosInstance.post("/register", userInfo);
+      const res = await axiosInstance.post("/register", userInfo);
+
+      localStorage.setItem("access-token", res.data.token);
+      refetchUser();
 
       Swal.fire({
         icon: "success",
@@ -44,17 +50,14 @@ const Register = () => {
       });
 
     } catch (error) {
-
       if (error.response?.status === 400) {
         Swal.fire({
           icon: "warning",
           title: "Email Already Exists",
-          text: "Please login with your existing account.",
-          confirmButtonText: "<button className='btn-primary'>Go to Login</button>"
+          text: "Please login with your existing account."
         }).then(() => {
           navigate("/auth/login");
         });
-
       } else {
         Swal.fire({
           icon: "error",
@@ -62,10 +65,10 @@ const Register = () => {
           text: "Something went wrong. Please try again."
         });
       }
-
       console.error(error);
     }
   };
+
 
 
   return (

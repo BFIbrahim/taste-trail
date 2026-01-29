@@ -66,7 +66,7 @@ const DashboardLayout = () => {
                                             className={({ isActive }) =>
                                                 `is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3 px-4  rounded-md transition ${isActive ? "bg-gray-700 text-white" : ""}`
                                             }
-                                            data-tip="Overview"
+                                            data-tip="Meal Planner"
                                         >
                                             <GiHotMeal className="text-2xl" />
                                             <span className="is-drawer-close:hidden">Meal Planner</span>

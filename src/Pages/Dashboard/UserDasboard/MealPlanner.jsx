@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import Swal from "sweetalert2";
-import useAxios from "../../../Hooks/useAxios";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { AuthContext } from "../../../Context/AuthContext";
 
 const days = [
   "Monday",
@@ -32,7 +33,10 @@ const allRecipes = [
 ];
 
 const MealPlanner = () => {
-  const axiosInstance = useAxios();
+  const axiosSecure = useAxiosSecure();
+  const {user} = useContext(AuthContext);
+  
+  console.log(user)
 
   const [planner, setPlanner] = useState({});
   const [activeDay, setActiveDay] = useState(null);
@@ -77,7 +81,7 @@ const MealPlanner = () => {
     }));
 
     try {
-      await axiosInstance.post("/meal-plans", payload);
+      await axiosSecure.post("/meal-plans", payload);
 
       Swal.fire({
         icon: "success",

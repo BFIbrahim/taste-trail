@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import useAxios from "../../Hooks/useAxios";
+import { AuthContext } from "../../Context/AuthContext";
 
 const Login = () => {
 
   const axiosInstance = useAxios();
   const navigate = useNavigate();
+  const { refetchUser } = useContext(AuthContext);
 
   const {
     register,
@@ -19,6 +21,7 @@ const Login = () => {
     try {
       const res = await axiosInstance.post("/login", data);
       localStorage.setItem("access-token", res.data.token);
+      refetchUser()
 
       Swal.fire({
         icon: "success",

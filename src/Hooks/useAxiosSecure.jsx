@@ -1,16 +1,22 @@
-import axios from 'axios';
-import React from 'react';
+import axios from "axios";
 
 const axiosSecure = axios.create({
-    baseURL: 'http://localhost:5000',
-})
+  baseURL: "http://localhost:5000",
+});
+
+axiosSecure.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("access-token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 const useAxiosSecure = () => {
-    return (
-        <div>
-            
-        </div>
-    );
+  return axiosSecure;
 };
 
 export default useAxiosSecure;

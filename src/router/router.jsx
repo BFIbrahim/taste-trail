@@ -7,6 +7,7 @@ import AuthLayout from "../Layout/AuthLayout";
 import Register from "../Pages/Authentication/Register";
 import DashboardLayout from "../Layout/DashboardLayout";
 import MealPlanner from "../Pages/Dashboard/UserDasboard/MealPlanner";
+import CookingTracker from "../Pages/Dashboard/UserDasboard/CookingTracker";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: "mealplanner",
         element: <MealPlanner />
+      },
+      {
+        path: "track-cooking",
+        element: <CookingTracker />
       }
     ]
   }
