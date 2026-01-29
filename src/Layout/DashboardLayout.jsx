@@ -132,7 +132,7 @@ const DashboardLayout = () => {
                                 user?.role === 'admin' && (
                                     <li>
                                         <NavLink
-                                            to="/dashboard/personal-cookbook"
+                                            to="/dashboard/manage-recipes"
                                             className={({ isActive }) =>
                                                 `is-drawer-close:tooltip is-drawer-close:tooltip-right flex items-center gap-3 px-4 rounded-md transition ${isActive ? "bg-gray-700 text-white" : ""}`
                                             }

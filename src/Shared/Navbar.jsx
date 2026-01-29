@@ -72,7 +72,7 @@ const Navbar = () => {
                 </div>
                 <div className="navbar-end">
                     {
-                        user ? <FaUserCircle className='text-3xl text-gray-500' /> : <Link to='/auth/login' className="btn btn-primary border-none text-white">Login</Link>
+                        user ? <img className='w-12 h-12 rounded-full cursor-pointer border-2 border-primary' src={user?.profilePicture} alt="" /> : <Link to='/auth/login' className="btn btn-primary border-none text-white">Login</Link>
                     }
                 </div>
             </div>
